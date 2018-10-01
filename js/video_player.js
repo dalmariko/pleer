@@ -20,17 +20,19 @@ class VideoPlayerBasic {
         this._video = document.querySelector(`${this._settings.videoPlayerContainer} .player__video`);
         this._toggleBtn = document.querySelector(`${this._settings.videoPlayerContainer} .toggle`);
         this._progressFilled = document.querySelector(`${this._settings.videoPlayerContainer} .progress__filled`);
+        this._valumeControl = document.querySelector(`${this._settings.videoPlayerContainer} .player__slider`);
 
         // Устанавливаем события
         this._setEvents();
 
         return this;
+
     }
 
     toggle(e) {
         const method = this._video.paused ? "play" : "pause";
         this._toggleBtn.textContent = this._video.paused ? '❚ ❚' :  '►';
-        this._video[method](); // this._video["play"]();   
+        this._video[method]();
     }
 
     _handleProgress(e) {
@@ -51,10 +53,12 @@ class VideoPlayerBasic {
         this._video.currentTime = 0;
     }
 
+
     _setEvents(settings) {
         this._video.addEventListener("click", e => this.toggle(e));
         this._toggleBtn.addEventListener("click",  e => this.toggle(e));
         this._video.addEventListener("timeupdate", e => this._handleProgress(e));
+        this._valumeControl.addEventListener("click",  e => this);
     }
 
     static addTemplate(settings) {
