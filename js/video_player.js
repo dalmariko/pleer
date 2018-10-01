@@ -20,7 +20,7 @@ class VideoPlayerBasic {
         this._video = document.querySelector(`${this._settings.videoPlayerContainer} .player__video`);
         this._toggleBtn = document.querySelector(`${this._settings.videoPlayerContainer} .toggle`);
         this._progressFilled = document.querySelector(`${this._settings.videoPlayerContainer} .progress__filled`);
-        this._valumeControl = document.querySelector(`${this._settings.videoPlayerContainer} .player__slider`);
+        this._valumeControl = document.querySelector(`${this._settings.videoPlayerContainer} [name="volume"] `);
 
         // Устанавливаем события
         this._setEvents();
@@ -38,6 +38,13 @@ class VideoPlayerBasic {
     _handleProgress(e) {
         const percent = (this._video.currentTime / this._video.duration) * 100;
         this._progressFilled.style.flexBasis = `${percent}%`;
+    }
+
+    _valumeProgres(e){
+        //получаем значение по клику на ползунке волуме
+        const valum  = this._valumeControl.value;
+
+        console.log(valum);
     }
 
     play() {
@@ -58,7 +65,7 @@ class VideoPlayerBasic {
         this._video.addEventListener("click", e => this.toggle(e));
         this._toggleBtn.addEventListener("click",  e => this.toggle(e));
         this._video.addEventListener("timeupdate", e => this._handleProgress(e));
-        this._valumeControl.addEventListener("click",  e => this);
+        this._valumeControl.addEventListener("click",  e => this._valumeProgres(e));
     }
 
     static addTemplate(settings) {
