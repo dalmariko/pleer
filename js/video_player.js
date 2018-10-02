@@ -29,53 +29,91 @@ class VideoPlayerBasic {
 
     }
 
-    toggle(e) {
+    /**
+     * Обработчик переключение с паузы на плей
+     * @param e
+     * @private
+     */
+    _toggle(e) {
         const method = this._video.paused ? "play" : "pause";
         this._toggleBtn.textContent = this._video.paused ? '❚ ❚' :  '►';
         this._video[method]();
     }
 
+    /**
+     * Обработчик для полосы загрузки видео
+     * @param e
+     * @private
+     */
     _handleProgress(e) {
         const percent = (this._video.currentTime / this._video.duration) * 100;
         this._progressFilled.style.flexBasis = `${percent}%`;
     }
 
+    /**
+     * Обработчик для звука
+     * @param e
+     * @private
+     */
     _valumeProgres(e){
         //получаем значение по клику на ползунке волуме и передаем значение в свойство volume плеера
         this._video.volume = this._valumeControl.value;
+        console.log(this._video.volume);
     }
 
+    /**
+     * Запуск плеера
+     */
     play() {
         this._video.play();
     }
 
+    /**
+     * Пауза плеера
+     */
     pause() {
         this._video.pause();
     }
 
+    /**
+     * Остановка плеера
+     */
     stop() {
         this._video.pause();
         this._video.currentTime = 0;
     }
 
-
+    /**
+     * Слушатель событий на панеле управления плеером.
+     * @param settings
+     * @private
+     */
     _setEvents(settings) {
-        this._video.addEventListener("click", e => this.toggle(e));
-        this._toggleBtn.addEventListener("click",  e => this.toggle(e));
+        this._video.addEventListener("click", e => this._toggle(e));
+        this._toggleBtn.addEventListener("click",  e => this._toggle(e));
         this._video.addEventListener("timeupdate", e => this._handleProgress(e));
 
         //события для звука.
-        this._valumeControl.addEventListener("click",  e => this._valumeProgres(e));
+        this._valumeControl.addEventListener("mouseup",  e => this._valumeProgres(e));
         this._valumeControl.addEventListener("mousemove",  e => this._valumeProgres(e));
         this._valumeControl.addEventListener("scroll",  e => this._valumeProgres(e));
 
     }
 
+    /**
+     * Добавляет разметку на страницу
+     * @param settings
+     */
     static addTemplate(settings) {
         const template = VideoPlayerBasic.template(settings);
         document.querySelector(settings.videoPlayerContainer).insertAdjacentHTML("afterbegin", template);
     }
 
+    /**
+     * Генеринует разметку
+     * @param settings
+     * @return {string}
+     */
     static template(settings) {
         const videoTemplate = `<video class="player__video viewer" src="${settings.videoUrl}"> </video>`;
         
@@ -98,6 +136,10 @@ class VideoPlayerBasic {
         `;
     }
 
+    /**
+     * Возвращает настройки по умолчанию
+     * @return {{videoUrl: string, videoPlayerContainer: string, playerType: string, controls: boolean, loop: boolean, valume: number}}
+     */
     static getDefaultSettings() {
         /**
          * Список настроек
@@ -114,30 +156,19 @@ class VideoPlayerBasic {
              playerType: "basic",
              controls: true,
              loop: false,
-             valume: 1
+             volume: 1
          }
     }
 }
 
-const myplayer = new VideoPlayerBasic({ 
-        videoUrl: "video/mov_bbb.mp4",
-        videoPlayerContainer: ".myplayer1",
-}).init();
-
-const myplayer2 = new VideoPlayerBasic({ 
-    videoUrl: "video/mov_bbb.1.mp4",
-    videoPlayerContainer: ".myplayer2",
-}).init();
-
-// TODO: Написать комменты для каждого метода
-// TODO: Написать метод изменения громкости и подвязать его к range инпуту
 
 
-// const videoUrlLinks = ["video/mov_bbb.mp4", "video/mov_bbb.1.mp4"];
 
-// videoUrlLinks.forEach((link, index) => {
-//     new VideoPlayerBasic({ 
-//         videoUrl: link,
-//         videoPlayerContainer: `.myplayer${index+1}`,
-//     }).init();
-// })
+const videoUrlLinks = ["video/mov_bbb.mp4", "video/mov_bbb.1.mp4"];
+
+videoUrlLinks.forEach((link, index) => {
+    new VideoPlayerBasic({
+        videoUrl: link,
+        videoPlayerContainer: `.myplayer${index+1}`,
+    }).init();
+});
