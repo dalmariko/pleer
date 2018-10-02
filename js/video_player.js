@@ -58,7 +58,6 @@ class VideoPlayerBasic {
     _valumeProgres(e){
         //получаем значение по клику на ползунке волуме и передаем значение в свойство volume плеера
         this._video.volume = this._valumeControl.value;
-        console.log(this._video.volume);
     }
 
     /**
