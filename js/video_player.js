@@ -6,7 +6,7 @@ class VideoPlayerBasic {
     /**
      * Метод init.
      * Производим проверку на наличие кретических свойств в настройках.
-     * Производим запуск методов инициализации разметки и events. 
+     * Производим запуск методов инициализации разметки и events.
      * Возвращаем публичные методы.
      */
     init() {
@@ -36,7 +36,7 @@ class VideoPlayerBasic {
      */
     _toggle(e) {
         const method = this._video.paused ? "play" : "pause";
-        this._toggleBtn.textContent = this._video.paused ? '❚ ❚' :  '►';
+        this._toggleBtn.textContent = this._video.paused ? '❚ ❚' : '►';
         this._video[method]();
     }
 
@@ -55,7 +55,7 @@ class VideoPlayerBasic {
      * @param e
      * @private
      */
-    _valumeProgres(e){
+    _valumeProgres(e) {
         //получаем значение по клику на ползунке волуме и передаем значение в свойство volume плеера
         this._video.volume = this._valumeControl.value;
     }
@@ -89,13 +89,13 @@ class VideoPlayerBasic {
      */
     _setEvents(settings) {
         this._video.addEventListener("click", e => this._toggle(e));
-        this._toggleBtn.addEventListener("click",  e => this._toggle(e));
+        this._toggleBtn.addEventListener("click", e => this._toggle(e));
         this._video.addEventListener("timeupdate", e => this._handleProgress(e));
 
         //события для звука.
-        this._valumeControl.addEventListener("mouseup",  e => this._valumeProgres(e));
-        this._valumeControl.addEventListener("mousemove",  e => this._valumeProgres(e));
-        this._valumeControl.addEventListener("scroll",  e => this._valumeProgres(e));
+        this._valumeControl.addEventListener("mouseup", e => this._valumeProgres(e));
+        this._valumeControl.addEventListener("mousemove", e => this._valumeProgres(e));
+        this._valumeControl.addEventListener("scroll", e => this._valumeProgres(e));
 
     }
 
@@ -115,7 +115,7 @@ class VideoPlayerBasic {
      */
     static template(settings) {
         const videoTemplate = `<video class="player__video viewer" src="${settings.videoUrl}"> </video>`;
-        
+
         const controlsTemplate = `
             <div class="player__controls">
                 <div class="progress">
@@ -149,18 +149,16 @@ class VideoPlayerBasic {
          * - valume: 0 - 1
          */
 
-         return {
-             videoUrl: "",
-             videoPlayerContainer: ".myplayer",
-             playerType: "basic",
-             controls: true,
-             loop: false,
-             volume: 1
-         }
+        return {
+            videoUrl: "",
+            videoPlayerContainer: ".myplayer",
+            playerType: "basic",
+            controls: true,
+            loop: false,
+            volume: 1
+        }
     }
 }
-
-
 
 
 const videoUrlLinks = ["video/mov_bbb.mp4", "video/mov_bbb.1.mp4"];
@@ -168,6 +166,6 @@ const videoUrlLinks = ["video/mov_bbb.mp4", "video/mov_bbb.1.mp4"];
 videoUrlLinks.forEach((link, index) => {
     new VideoPlayerBasic({
         videoUrl: link,
-        videoPlayerContainer: `.myplayer${index+1}`,
+        videoPlayerContainer: `.myplayer${index + 1}`,
     }).init();
 });
