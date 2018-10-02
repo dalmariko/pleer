@@ -68,7 +68,6 @@ class VideoPlayerBasic {
         this._valumeControl.addEventListener("click",  e => this._valumeProgres(e));
         this._valumeControl.addEventListener("mousemove",  e => this._valumeProgres(e));
         this._valumeControl.addEventListener("scroll",  e => this._valumeProgres(e));
-        this._valumeControl.addEventListener("focus",  e => this._valumeProgres(e));
 
     }
 
