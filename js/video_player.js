@@ -41,10 +41,8 @@ class VideoPlayerBasic {
     }
 
     _valumeProgres(e){
-        //получаем значение по клику на ползунке волуме
-        const valum  = this._valumeControl.value;
-
-        console.log(valum);
+        //получаем значение по клику на ползунке волуме и передаем значение в свойство volume плеера
+        this._video.volume = this._valumeControl.value;
     }
 
     play() {
@@ -65,7 +63,13 @@ class VideoPlayerBasic {
         this._video.addEventListener("click", e => this.toggle(e));
         this._toggleBtn.addEventListener("click",  e => this.toggle(e));
         this._video.addEventListener("timeupdate", e => this._handleProgress(e));
+
+        //события для звука.
         this._valumeControl.addEventListener("click",  e => this._valumeProgres(e));
+        this._valumeControl.addEventListener("mousemove",  e => this._valumeProgres(e));
+        this._valumeControl.addEventListener("scroll",  e => this._valumeProgres(e));
+        this._valumeControl.addEventListener("focus",  e => this._valumeProgres(e));
+
     }
 
     static addTemplate(settings) {
