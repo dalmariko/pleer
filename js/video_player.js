@@ -19,9 +19,11 @@ class VideoPlayerBasic {
         // Находим элементы управления в зависимости от контейнера
         this._video = document.querySelector(`${this._settings.videoPlayerContainer} .player__video`);
         this._toggleBtn = document.querySelector(`${this._settings.videoPlayerContainer} .toggle`);
+        this._progresContainer = document.querySelector(`${this._settings.videoPlayerContainer} .progress`);
         this._progressFilled = document.querySelector(`${this._settings.videoPlayerContainer} .progress__filled`);
         this._valumeControl = document.querySelector(`${this._settings.videoPlayerContainer} [name="volume"] `);
 
+        this._mouseDoun=false;
         // Устанавливаем события
         this._setEvents();
 
@@ -82,6 +84,13 @@ class VideoPlayerBasic {
         this._video.currentTime = 0;
     }
 
+    _scrub(e){
+        //Для того что бы ужрать условие нужно вспомнить о && запнается на лжи. а функция тру всегда и она вызывается
+        if(this._mouseDoun || e.type==='click') {
+           this._video.currentTime = (e.offsetX / this._progresContainer.offsetWidth) * this._video.duration;
+        }
+    }
+
     /**
      * Слушатель событий на панеле управления плеером.
      * @param settings
@@ -96,6 +105,15 @@ class VideoPlayerBasic {
         this._valumeControl.addEventListener("mouseup", e => this._valumeProgres(e));
         this._valumeControl.addEventListener("mousemove", e => this._valumeProgres(e));
         this._valumeControl.addEventListener("scroll", e => this._valumeProgres(e));
+
+    //    для скраба
+        this._progresContainer.addEventListener('click', e=>this._scrub(e));
+
+        //запинается на лжи спомнить о && запнается на лжи. а функция тру всегда и она вызывается
+        // this._progressContainer.addEventListener('mousemove', e=>this._mouseDoun && this._scrub(e));
+        this._progresContainer.addEventListener('mousemove', e=>this._scrub(e));
+        this._progresContainer.addEventListener('mousedown', e=>this._mouseDoun=true);
+        this._progresContainer.addEventListener('mouseup', e=>this._mouseDoun=false);
 
     }
 
@@ -123,9 +141,6 @@ class VideoPlayerBasic {
                 </div>
                 <button class="player__button toggle" title="Toggle Play">►</button>
                 <input type="range" name="volume" class="player__slider" min=0 max="1" step="0.05" value="1">
-                <input type="range" name="playbackRate" class="player__slider" min="0.5" max="2" step="0.1" value="1">
-                <button data-skip="-1" class="player__button">« 1s</button>
-                <button data-skip="1" class="player__button">1s »</button>
             </div>
         `;
 
@@ -160,12 +175,50 @@ class VideoPlayerBasic {
     }
 }
 
+//
+// const videoUrlLinks = ["video/mov_bbb.mp4", "video/mov_bbb.1.mp4"];
+//
+// videoUrlLinks.forEach((link, index) => {
+//     new VideoPlayerBasic({
+//         videoUrl: link,
+//         videoPlayerContainer: `.myplayer${index + 1}`,
+//     }).init();
+// });
 
-const videoUrlLinks = ["video/mov_bbb.mp4", "video/mov_bbb.1.mp4"];
-
-videoUrlLinks.forEach((link, index) => {
-    new VideoPlayerBasic({
-        videoUrl: link,
-        videoPlayerContainer: `.myplayer${index + 1}`,
+const mypleer1 = new VideoPlayerBasic({
+        videoUrl: 'video/mov_bbb.mp4',
+        videoPlayerContainer: `.myplayer1`,
     }).init();
-});
+
+
+class VideoPleerPro extends VideoPlayerBasic {
+    constructor(settings){
+        super(settings);
+    }
+
+    init(){
+        super.init();
+        VideoPleerPro.updateVideoPleerTemplate(this._settings);
+    }
+
+    static proVideoControlsTemplate(settings){
+        return `
+        <input type="range" name="playbackRate" class="player__slider" min="0.5" max="2" step="0.1" value="${settings.dafaultPlaybackrate || 1}">
+        <button data-skip="${-settings.skipTime || -1}" class="player__button">« ${-settings.skipTime || -1}s</button>               
+        <button data-skip="${settings.skipTime || 1}" class="player__button">${settings.skipTime || 1}s »</button>
+      `;
+    }
+
+    static updateVideoPleerTemplate(settings){
+        const template = VideoPleerPro.proVideoControlsTemplate(settings);
+        document.querySelector(`${settings.videoPlayerContainer} .player__controls`).insertAdjacentHTML("beforeend", template);
+    }
+}
+
+
+const mypleer2 = new VideoPleerPro({
+    videoUrl: 'video/mov_bbb.mp4',
+    videoPlayerContainer: `.myplayer2`,
+    dafaultPlaybackrate: 0.1,
+    skipTime: 2
+}).init();
