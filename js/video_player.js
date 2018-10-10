@@ -191,6 +191,19 @@ const mypleer1 = new VideoPlayerBasic({
     }).init();
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 class VideoPleerPro extends VideoPlayerBasic {
     constructor(settings){
         super(settings);
@@ -200,6 +213,17 @@ class VideoPleerPro extends VideoPlayerBasic {
         super.init();
         VideoPleerPro.updateVideoPleerTemplate(this._settings);
     }
+
+
+    // TODO: _setEvents установить события на инпут playbackRate
+    // TODO: _setEvents установить события на кнопки переметки вперед назад
+    // TODO: Создать метод изменения playbackRate
+    // TODO: Создать метод перемотки вперед нразад по клику на кнопки data-skip
+
+
+
+
+
 
     static proVideoControlsTemplate(settings){
         return `
