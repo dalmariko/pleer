@@ -207,11 +207,13 @@ const mypleer1 = new VideoPlayerBasic({
 class VideoPleerPro extends VideoPlayerBasic {
     constructor(settings){
         super(settings);
+
     }
 
     init(){
         super.init();
         VideoPleerPro.updateVideoPleerTemplate(this._settings);
+        this._playbackRate = document.querySelector('[name="playbackRate"]');
     }
 
 
@@ -221,9 +223,17 @@ class VideoPleerPro extends VideoPlayerBasic {
     // TODO: Создать метод перемотки вперед нразад по клику на кнопки data-skip
 
 
+    _playRate(e){
+        // console.log('up');
+        console.log(this._playbackRate.value);
+    }
 
 
-
+    //TODO Вот Здесь траблы
+    _setEvents(settings){
+        console.log(this);
+        this._playbackRate.addEventListener('click', e=>this._playRate(e));
+    }
 
     static proVideoControlsTemplate(settings){
         return `
